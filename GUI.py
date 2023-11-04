@@ -1,20 +1,21 @@
 import customtkinter
 import keyboard
-import main
+import tools as t
+import main as m
+
+# design
+customtkinter.set_appearance_mode("System")
+customtkinter.set_default_color_theme("dark-blue")
 
 
 def open_window():
-
     # commands
     def on_enter(event):
         keyword = entry.get()
-        main.his(title=keyword)
-        main.keyword(key_var=keyword)
-        entry.delete(0, 'end')
-
-    # design
-    customtkinter.set_appearance_mode("System")
-    customtkinter.set_default_color_theme("dark-blue")
+        if keyword.strip():
+            t.his(title=keyword)
+            m.keyword(key_var=keyword)
+            entry.delete(0, 'end')
 
     # size
     root = customtkinter.CTk()
@@ -41,3 +42,8 @@ def open_window():
 
 keyboard.add_hotkey('f10', open_window)
 keyboard.wait()
+
+
+def available():
+    return True
+
