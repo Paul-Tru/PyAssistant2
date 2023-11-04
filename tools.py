@@ -16,6 +16,19 @@ date = now.strftime("%Y-%m-%d")
 current = now.strftime("%H:%M")
 
 
+def keyword(key_var):
+    print(key_var)
+    get_wikipedia_var = get_wikipedia(title=key_var)
+    get_info_var = get_info(title=key_var)
+    if get_info_var is not None:
+        print(get_info_var)
+    elif get_wikipedia_var is not None:
+        print(get_wikipedia_var)
+    else:
+        print("N/A")
+    his(title=key_var)
+
+
 def change_bool(var, c_bool):
     config.var = c_bool
     with open('config.py', 'w') as f:

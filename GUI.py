@@ -1,7 +1,6 @@
 import customtkinter
 import keyboard
 import tools as t
-import main as m
 
 # design
 customtkinter.set_appearance_mode("System")
@@ -14,7 +13,7 @@ def open_window():
         keyword = entry.get()
         if keyword.strip():
             t.his(title=keyword)
-            m.keyword(key_var=keyword)
+            t.keyword(key_var=keyword)
             entry.delete(0, 'end')
 
     # size
