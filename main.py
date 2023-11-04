@@ -22,7 +22,7 @@ def change_bool(var, c_bool):
         f.write(f"{var} = {c_bool}")
 
 
-def log(title):
+def his(title):
     with open("log.json", "r") as file:
         try:
             log_data = json.load(file)
@@ -35,7 +35,6 @@ def log(title):
     with open("log.json", "w") as file:
         file.write(json.dumps(log_data, indent=4))
 
-    print(str(title))
 
 
 # Functions
@@ -52,11 +51,11 @@ def add_info(title, text):
 
         with open("info.json", "w") as file:
             file.write(json.dumps(info_data, indent=4))
-        log(title=title)
+        his(title=title)
         return True
 
     except Exception as e:
-        log(title=e)
+        his(title=fRed + str(e) + fR)
         return e
 
 
@@ -84,13 +83,15 @@ def get_wikipedia(title):
 
     response = requests.get(base_url, params=params)
     data = response.json()
-
-    pages = data["query"]["pages"]
-    for page_id, page_info in pages.items():
-        if page_id != "-1":
-            article_text = page_info["extract"]
-            log(title=title)
-            return clean_html(article_text)
+    if "query" in data:
+        pages = data["query"]["pages"]
+        for page_id, page_info in pages.items():
+            if page_id != "-1":
+                article_text = page_info["extract"]
+                his(title=title)
+                return clean_html(article_text)
+    else:
+        return None
 
     return None
 
@@ -98,3 +99,30 @@ def get_wikipedia(title):
 def clean_html(html_text):
     soup = BeautifulSoup(html_text, 'html.parser')
     return soup.get_text()
+
+
+def ui():
+    keyword(key_var=input())
+
+
+def main():
+    ui()
+
+
+def keyword(key_var):
+    if key_var.strip():
+        print(key_var)
+        get_wikipedia_var = get_wikipedia(title=key_var)
+        get_info_var = get_info(title=key_var)
+        if get_info_var is not None:
+            print(get_info_var)
+        elif get_wikipedia_var is not None:
+            print(get_wikipedia_var)
+        else:
+            key_var = key_var + " not found"
+            print("N/A")
+        his(title=key_var)
+
+
+if __name__ == "__main__":
+    main()

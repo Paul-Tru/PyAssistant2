@@ -1,16 +1,15 @@
 import customtkinter
 import keyboard
-
-keyword = None
+import main
 
 
 def open_window():
-    global keyword
 
     # commands
     def on_enter(event):
-        global keyword
         keyword = entry.get()
+        main.his(title=keyword)
+        main.keyword(key_var=keyword)
         entry.delete(0, 'end')
 
     # design
@@ -37,10 +36,8 @@ def open_window():
     # buttons
     button = customtkinter.CTkButton(master=frame, text="Quit", command=root.destroy)
     button.pack(pady=12, padx=10)
-    print(keyword)
     root.mainloop()
+
 
 keyboard.add_hotkey('f10', open_window)
 keyboard.wait()
-
-
