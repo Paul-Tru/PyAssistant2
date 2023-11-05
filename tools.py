@@ -1,9 +1,11 @@
 from bs4 import BeautifulSoup
 import json
 import requests
-import config
 from datetime import datetime
 from colorama import Fore
+import configparser
+
+import GUI
 
 # statements
 fY = Fore.YELLOW
@@ -18,21 +20,49 @@ current = now.strftime("%H:%M")
 
 def keyword(key_var):
     print(key_var)
-    get_wikipedia_var = get_wikipedia(title=key_var)
-    get_info_var = get_info(title=key_var)
-    if get_info_var is not None:
-        print(get_info_var)
-    elif get_wikipedia_var is not None:
-        print(get_wikipedia_var)
+    if key_var.startswith("/"):
+        commands(key_var)
     else:
-        print("N/A")
-    his(title=key_var)
+        get_wikipedia_var = get_wikipedia(title=key_var)
+        get_info_var = get_info(title=key_var)
+        if get_info_var is not None:
+            print(get_info_var)
+        elif get_wikipedia_var is not None:
+            print(get_wikipedia_var)
+        else:
+            print("N/A")
+        his(title=key_var)
 
 
-def change_bool(var, c_bool):
-    config.var = c_bool
-    with open('config.py', 'w') as f:
-        f.write(f"{var} = {c_bool}")
+def commands(key_var):
+    key_var = key_var.replace("/", "")
+    if key_var == "bool":
+        GUI.change_bool_status()
+    elif key_var == "tts":
+        change_bool(sec="functions", var="tts_var")
+    elif key_var.startswith("add"):
+        key_var = key_var.replace("add", "")
+        parts = key_var.split("; ")
+        ti, te = parts[0], parts[1]
+        add_info(title=ti, text=te)
+
+
+def change_bool(sec, var):
+    config = configparser.ConfigParser()
+    config.read("config.ini")
+    section = config[sec]
+    var = section[var]
+    current_value = config.getboolean(sec, var)
+    config.set(sec, var, str(not current_value))
+    with open("config.ini", 'w') as configfile:
+        config.write(configfile)
+
+
+def get_variable(sec, var):
+    config = configparser.ConfigParser()
+    config.read("config.ini")
+    value = config.get(sec, var)
+    return value
 
 
 def his(title):
