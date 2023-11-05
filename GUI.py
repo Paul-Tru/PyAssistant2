@@ -12,9 +12,13 @@ def open_window():
     # commands
     def on_enter(event):
         keyword = entry.get()
+        print(f"on_enter called with keyword: {keyword}")
         if keyword.strip():
-            t.his(title=keyword)
-            t.keyword(key_var=keyword)
+            try:
+                t.his(title=keyword)
+                t.keyword(key_var=keyword)
+            except Exception as e:
+                print(f"Error when calling t.his or t.keyword: {e}")
             entry.delete(0, 'end')
 
     # size
@@ -84,13 +88,13 @@ def change_bool_status():
                 button = create_button(frame, filename, section, variable)
                 button.pack(pady=5, padx=5)
 
-
         save_button = ctk.CTkButton(master=root, text="Save", command=root.destroy, font=("Roboto", 12))
         save_button.pack(pady=5, padx=5)
 
         root.mainloop()
 
     create_window()
+
 
 keyboard.add_hotkey('f10', open_window)
 keyboard.wait()
