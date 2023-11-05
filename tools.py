@@ -31,6 +31,7 @@ def keyword(key_var):
             print(get_info_var)
         elif get_wikipedia_var is not None:
             print(get_wikipedia_var)
+            GUI.answer(key_var, get_wikipedia_var)
         else:
             print("N/A")
         his(title=key_var)
@@ -42,6 +43,9 @@ def commands(key_var):
         GUI.change_bool_status()
     elif key_var == "tts":
         change_bool(sec="functions", var="tts_var")
+    elif key_var == "moviedb":
+        c, k = GUI.moviedb()
+        api.get_moviedb(choice = c, keyword=k)
     elif key_var.startswith("add"):
         key_var = key_var.replace("add", "")
         parts = key_var.split("; ")
@@ -59,6 +63,13 @@ def change_bool(sec, var):
             config.write(configfile)
     else:
         print(f"Option {var} not found in section {sec}")
+
+
+def config_var(sec, var):
+    config = configparser.ConfigParser()
+    config.read("config_var.ini")
+    val = config.get(sec, var)
+    return val
 
 
 def auth(var):
