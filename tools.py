@@ -1,11 +1,13 @@
 from bs4 import BeautifulSoup
 import json
-import requests
 from datetime import datetime
 from colorama import Fore
 import configparser
+import os
+from dotenv import load_dotenv
 
 import GUI
+import api
 
 # statements
 fY = Fore.YELLOW
@@ -23,7 +25,7 @@ def keyword(key_var):
     if key_var.startswith("/"):
         commands(key_var)
     else:
-        get_wikipedia_var = get_wikipedia(title=key_var)
+        get_wikipedia_var = api.get_wikipedia(title=key_var)
         get_info_var = get_info(title=key_var)
         if get_info_var is not None:
             print(get_info_var)
@@ -50,12 +52,19 @@ def commands(key_var):
 def change_bool(sec, var):
     config = configparser.ConfigParser()
     config.read("config.ini")
-    section = config[sec]
-    var = section[var]
-    current_value = config.getboolean(sec, var)
-    config.set(sec, var, str(not current_value))
-    with open("config.ini", 'w') as configfile:
-        config.write(configfile)
+    if config.has_option(sec, var):
+        current_value = config.getboolean(sec, var)
+        config.set(sec, var, str(not current_value))
+        with open("config.ini", 'w') as configfile:
+            config.write(configfile)
+    else:
+        print(f"Option {var} not found in section {sec}")
+
+
+def auth(var):
+    load_dotenv()
+    r_var = os.getenv(var)
+    return r_var
 
 
 def get_variable(sec, var):
@@ -111,31 +120,6 @@ def get_info(title):
         return f"{text}\n\n{date_get_info}"
     else:
         return None
-
-
-def get_wikipedia(title):
-    base_url = "https://de.wikipedia.org/w/api.php"
-    params = {
-        "action": "query",
-        "format": "json",
-        "prop": "extracts",
-        "exintro": True,
-        "titles": title
-    }
-
-    response = requests.get(base_url, params=params)
-    data = response.json()
-    if "query" in data:
-        pages = data["query"]["pages"]
-        for page_id, page_info in pages.items():
-            if page_id != "-1":
-                article_text = page_info["extract"]
-                his(title=title)
-                return clean_html(article_text)
-    else:
-        return None
-
-    return None
 
 
 def clean_html(html_text):
