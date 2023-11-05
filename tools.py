@@ -45,7 +45,7 @@ def commands(key_var):
         change_bool(sec="functions", var="tts_var")
     elif key_var == "moviedb":
         c, k = GUI.moviedb()
-        api.get_moviedb(choice = c, keyword=k)
+        api.get_moviedb(c, k)
     elif key_var.startswith("add"):
         key_var = key_var.replace("add", "")
         parts = key_var.split("; ")

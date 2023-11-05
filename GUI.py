@@ -124,6 +124,9 @@ def moviedb():
     entry = ctk.CTkEntry(master=frame, placeholder_text="Keyword")
     entry.pack(pady=12, padx=10)
 
+    button = ctk.CTkButton(master=frame, text="Quit", command=root.destroy())
+    button.pack(pady=12, padx=10)
+
     entry.bind('<Return>', on_enter)
 
     root.mainloop()
