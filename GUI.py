@@ -96,8 +96,60 @@ def change_bool_status():
     create_window()
 
 
+def moviedb():
+    keyword = ()
+    choice = ()
+
+    # commands
+    def on_enter(event):
+        global keyword, choice
+        keyword = entry.get()
+        choice = optionmenu.get()
+
+    root = ctk.CTk()
+    root.geometry("300x250")
+
+    frame = ctk.CTkFrame(master=root)
+    frame.pack(pady=20, padx=60, fill="both", expand=True)
+
+    # title
+    label = ctk.CTkLabel(master=frame, text="MovieDB", font=("Roboto", 24))
+    label.pack(pady=12, padx=10)
+
+    # dropdown menu
+    optionmenu = ctk.CTkOptionMenu(frame, values=["Movie", "TV", "Actor"])
+    optionmenu.pack(side="top")
+
+    # input
+    entry = ctk.CTkEntry(master=frame, placeholder_text="Keyword")
+    entry.pack(pady=12, padx=10)
+
+    entry.bind('<Return>', on_enter)
+
+    root.mainloop()
+    return keyword, choice
+
+
+def answer(title, text):
+    root = ctk.CTk()
+    root.geometry("300x250")
+
+    frame = ctk.CTkFrame(master=root)
+    frame.pack(pady=20, padx=60, fill="both", expand=True)
+
+    # title
+    label = ctk.CTkLabel(master=frame, text=title, font=("Roboto", 24))
+    label.pack(pady=5, padx=10)
+
+    text_widget = ctk.CTkTextbox(root, wrap="word")
+    text_widget.pack(fill="both",expand=True)
+    text_widget.insert("1.0", text)
+    root.mainloop()
+
+
 keyboard.add_hotkey('f10', open_window)
 keyboard.wait()
+
 
 
 def available():
