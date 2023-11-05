@@ -1,4 +1,5 @@
 import tools as t
+import json
 import requests
 
 
@@ -30,9 +31,11 @@ def get_wikipedia(title):
 def get_moviedb(choice, keyword):
     lan = t.config_var(sec="moviedb", var="lan")
     choice = choice.lower()
+    print(choice)
     keyword = keyword.replace(" ", "%20")
     if keyword == "actor":
         keyword = "person"
+    print(keyword)
     url = f"https://api.themoviedb.org/3/search/{choice}?query={keyword}&include_adult=false&language={lan}&page=1"
     auth = frozenset(t.auth(var="AUTH"))
     headers = {
@@ -41,5 +44,5 @@ def get_moviedb(choice, keyword):
     }
 
     response = requests.get(url, headers=headers)
-
-    print(response.text)
+    data = json.loads(response.text)
+    print(data)
