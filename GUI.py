@@ -11,12 +11,12 @@ ctk.set_default_color_theme("dark-blue")
 def open_window():
     # commands
     def on_enter(event):
-        keyword = entry.get()
-        print(f"on_enter called with keyword: {keyword}")
-        if keyword.strip():
+        keyword_enter = entry.get()
+        print(f"on_enter called with keyword: {keyword_enter}")
+        if keyword_enter.strip():
             try:
-                t.his(title=keyword)
-                t.keyword(key_var=keyword)
+                t.his(title=keyword_enter)
+                t.keyword(key_var=keyword_enter)
             except Exception as e:
                 print(f"Error when calling t.his or t.keyword: {e}")
             entry.delete(0, 'end')
@@ -47,7 +47,7 @@ def open_window():
 def change_bool_status():
     filename = "config.ini"
 
-    def toggle_variable(filename, section, variable, button):
+    def toggle_variable(section, variable, button):
         config = configparser.ConfigParser()
         config.read(filename)
         current_value = config.getboolean(section, variable)
@@ -59,7 +59,7 @@ def change_bool_status():
         else:
             button.configure(fg_color='red')
 
-    def create_button(root, filename, section, variable):
+    def create_button(root, section, variable):
         button = ctk.CTkButton(master=root, text=f"{variable}")
         config = configparser.ConfigParser()
         config.read(filename)
@@ -68,7 +68,7 @@ def change_bool_status():
         else:
             button.configure(fg_color='red', font=("Roboto", 12))
 
-        button.configure(command=lambda s=section, v=variable, b=button: toggle_variable(filename, s, v, b))
+        button.configure(command=lambda s=section, v=variable, b=button: toggle_variable(s, v, b))
 
         return button
 
@@ -85,7 +85,7 @@ def change_bool_status():
             label.pack(pady=5, padx=5)
 
             for variable in config[section]:
-                button = create_button(frame, filename, section, variable)
+                button = create_button(frame, section, variable)
                 button.pack(pady=5, padx=5)
 
         save_button = ctk.CTkButton(master=root, text="Save", command=root.destroy, font=("Roboto", 12))
@@ -145,7 +145,7 @@ def answer(title, text):
     label.pack(pady=5, padx=10)
 
     text_widget = ctk.CTkTextbox(root, wrap="word")
-    text_widget.pack(fill="both",expand=True)
+    text_widget.pack(fill="both", expand=True)
     text_widget.insert("1.0", text)
     root.mainloop()
 
@@ -154,7 +154,5 @@ keyboard.add_hotkey('f10', open_window)
 keyboard.wait()
 
 
-
 def available():
     return True
-

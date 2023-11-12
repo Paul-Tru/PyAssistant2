@@ -25,8 +25,8 @@ def keyword(key_var):
     if key_var.startswith("/"):
         commands(key_var)
     else:
-        get_wikipedia_var = api.get_wikipedia(title=key_var)
-        get_info_var = get_info(title=key_var)
+        get_wikipedia_var = api.get_wikipedia(key_var)
+        get_info_var = get_info(key_var)
         if get_info_var is not None:
             print(get_info_var)
         elif get_wikipedia_var is not None:
@@ -34,7 +34,7 @@ def keyword(key_var):
             GUI.answer(key_var, get_wikipedia_var)
         else:
             print("N/A")
-        his(title=key_var)
+        his(key_var)
 
 
 def commands(key_var):
@@ -42,7 +42,7 @@ def commands(key_var):
     if key_var == "bool":
         GUI.change_bool_status()
     elif key_var == "tts":
-        change_bool(sec="functions", var="tts_var")
+        change_bool("functions", "tts_var")
     elif key_var == "moviedb":
         c, k = GUI.moviedb()
         api.get_moviedb(c, k)
@@ -50,7 +50,7 @@ def commands(key_var):
         key_var = key_var.replace("add", "")
         parts = key_var.split("; ")
         ti, te = parts[0], parts[1]
-        add_info(title=ti, text=te)
+        add_info(ti, te)
 
 
 def change_bool(sec, var):
@@ -73,16 +73,15 @@ def config_var(sec, var):
 
 
 def auth(var):
+    print(var)
     load_dotenv()
-    r_var = os.getenv(var)
-    return r_var
+    return os.getenv(var)
 
 
 def get_variable(sec, var):
     config = configparser.ConfigParser()
     config.read("config.ini")
-    value = config.get(sec, var)
-    return value
+    return config.get(sec, var)
 
 
 def his(title):

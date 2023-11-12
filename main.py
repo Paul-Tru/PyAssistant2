@@ -3,7 +3,7 @@ import tools as t
 
 
 def ui():
-    t.keyword(key_var=input())
+    t.keyword(input())
 
 
 def main():

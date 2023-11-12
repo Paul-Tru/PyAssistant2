@@ -29,7 +29,8 @@ def get_wikipedia(title):
 
 
 def get_moviedb(choice, keyword):
-    lan = t.config_var(sec="moviedb", var="lan")
+    lan = t.config_var("moviedb", "lan")
+    print(lan)
     choice = choice.lower()
     print(choice)
     keyword = keyword.replace(" ", "%20")
@@ -37,12 +38,17 @@ def get_moviedb(choice, keyword):
         keyword = "person"
     print(keyword)
     url = f"https://api.themoviedb.org/3/search/{choice}?query={keyword}&include_adult=false&language={lan}&page=1"
-    auth = frozenset(t.auth(var="AUTH"))
+    print(url)
+    auth = frozenset(t.auth("AUTH"))
+    print(auth)
     headers = {
         "accept": "application/json",
         "Authorization": auth
     }
+    print(headers)
 
     response = requests.get(url, headers=headers)
     data = json.loads(response.text)
     print(data)
+
+get_moviedb("movie", "snowden")
